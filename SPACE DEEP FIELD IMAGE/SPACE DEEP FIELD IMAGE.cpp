@@ -1,11 +1,11 @@
-#include<stdio.h> 
+﻿#include<stdio.h> 
 #include<math.h>
 
 #define MAX_SIZE (1000) 
 
 char x[MAX_SIZE][MAX_SIZE];
 int M_values, N_values, i, j;
-int planet = 0, fixed_star = 0, comet = 0;
+int planet = 0, fixed_star = 0, comet = 0; //ERROR ไม่ต้องตรวจครับ
 
 int calculate();
 int process();
