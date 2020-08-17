@@ -3,9 +3,10 @@
 
 #define MAX_SIZE (1000) 
 
-char x[MAX_SIZE][MAX_SIZE];
+char x_c[MAX_SIZE][MAX_SIZE];
+int x[MAX_SIZE][MAX_SIZE];
 int M_values, N_values, i, j;
-int planet = 0, fixed_star = 0, comet = 0; //ERROR ไม่ต้องตรวจครับ
+int planet = 0, fixed_star = 0, comet = 0;
 
 int calculate();
 int process();
@@ -14,6 +15,7 @@ int Check_Step2_1(int, int);
 int Check_Step2_2(int, int);
 int Check_Step3(int, int);
 int Check_Step4(int, int);
+int Reset(int, int);
 
 int main()
 {
@@ -38,12 +40,25 @@ int main()
     for (i = 1; i <= M_values; i++) 
     {
         for (j = 1; j <= N_values; j++) {
-            if (scanf_s("%c", &x[i][j]) != 1) {
-                printf("ERROR\n");
-                return 1;
+            scanf_s("%c", &x_c[i][j]);
+            x[i][j] = x_c[i][j];
+            if (x[i][j] == 10)
+            {
+                j--;
+            }
+            else
+            {
+                x[i][j] -= 48;
             }
         }
-        printf("\n%c\n", x[i][j]);
+    }
+    printf("\n");
+    for (i = 1; i <= M_values; i++)
+    {
+        for (j = 1; j <= N_values; j++) {
+            printf("%d", x[i][j]);
+        }
+        printf("\n");
     }
 
     calculate();
@@ -74,13 +89,29 @@ int calculate()
 
 int Check_Step1(int k, int l)
 {
-    if (x[k][l+1] == 1)
+    if (x[k][l +1 ] == 1)
     {
         Check_Step2_1(k, l);
+        printf("\n");
+        for (i = 1; i <= M_values; i++)
+        {
+            for (j = 1; j <= N_values; j++) {
+                printf("%d", x[i][j]);
+            }
+            printf("\n");
+        }
     }
     else
     {
         Check_Step2_2(k, l);
+        printf("\n");
+        for (i = 1; i <= M_values; i++)
+        {
+            for (j = 1; j <= N_values; j++) {
+                printf("%d", x[i][j]);
+            }
+            printf("\n");
+        }
     }
     return 0;
 }
@@ -90,13 +121,13 @@ int Check_Step2_1(int m, int n)
     if (x[m + 1][n] == 1)
     {
         planet += 1;
-        for (int o = m; o < (M_values - m); o++)
+        for (int o = m; o <= M_values; o++)
         {
-            for (int p = n; p < (N_values - n); p++)
+            for (int p = n; p <= N_values; p++)
             {
                 if (x[o][p] == 1)
                 {
-                    x[o][p] == 0;
+                    Reset(o, p);
                 }
                 else
                 {
@@ -113,13 +144,13 @@ int Check_Step2_1(int m, int n)
     {
         comet += 1;
         int q = 0;
-        for (int o = m; o < (M_values - m); o++)
+        for (int o = m; o <= M_values; o++)
         {
-            for (int p = n + q; p < (N_values - n); p++)
+            for (int p = n + q; p <= N_values; p++)
             {
                 if (x[o][p] == 1)
                 {
-                    x[o][p] == 0;
+                    Reset(o, p);
                 }
                 else
                 {
@@ -146,13 +177,13 @@ int Check_Step2_2(int m, int n)
     {
         comet += 1;
         int q = 0;
-        for (int p = n; p < (M_values - n); p++)
+        for (int p = n; p <= N_values; p++)
         {
-            for (int o = m + q; o < (N_values - m); o++)
+            for (int o = m + q; o <= M_values; o++)
             {
                 if (x[o][p] == 1)
                 {
-                    x[o][p] == 0;
+                    Reset(o, p);
                 }
                 else
                 {
@@ -181,17 +212,17 @@ int Check_Step3(int m, int n)
         int q = 0;
         for (int p = n; p > 0; p--)
         {
-            for (int o = m + q; o < (M_values - m); o++)
+            for (int o = m + q; o <= M_values; o++)
             {
                 if (x[o][p] == 1)
                 {
-                    x[o][p] == 0;
+                    Reset(o, p);
                 }
                 else
                 {
                     if (x[m + q + 1][n - q -1] == 0)
                     {
-                        p = 2000;
+                        p = 0;
                     }
                     o = 2000;
                 }
@@ -204,34 +235,34 @@ int Check_Step3(int m, int n)
 
 int Check_Step4(int m, int n)
 {
-    for (int r = m; r < (M_values - m); r++)
+    for (int r = m; r <= M_values ; r++)
     {
         if (x[r][n] == 0)
         {
-            if (x[r][n + 1] == 0)
+            if (x[r - 1][n + 1] == 0)
             {
                 fixed_star += 1;
                 int q = 0;
-                for (int o = m; o < (M_values - m); o++)
+                for (int o = m; o <= M_values; o++)
                 {
                     for (int p = n - q; p < 0; p--)
                     {
                         if (x[o][p] == 1)
                         {
-                            x[o][p] == 0;
+                            Reset(o, p);
                         }
                         else
                         {
                             if (x[m + q + 1][n - q - 1] == 0)
                             {
                                 int s = 0;
-                                for (int t = m + q; t < (M_values - (m + q)); t++)
+                                for (int t = m + q; t <= M_values; t++)
                                 {
-                                    for (int u = (n - q) + s; u < (N_values - (n - q)); u++)
+                                    for (int u = (n - q) + s; u <= N_values; u++)
                                     {
                                         if (x[t][u] == 1)
                                         {
-                                            x[t][u] == 0;
+                                            Reset(t, u);
                                         }
                                         else
                                         {
@@ -257,13 +288,13 @@ int Check_Step4(int m, int n)
             {
                 comet += 1;
                 int q = 0;
-                for (int o = m; o < (M_values - m); o++)
+                for (int o = m; o <= M_values; o++)
                 {
-                    for (int p = n - q; p < 0; p--)
+                    for (int p = n + q; p > 0; p--)
                     {
                         if (x[o][p] == 1)
                         {
-                            x[o][p] == 0;
+                            Reset(o, p);
                         }
                         else
                         {
@@ -271,7 +302,7 @@ int Check_Step4(int m, int n)
                             {
                                 o = 2000;
                             }
-                            p = 2000;
+                            p = 0;
                         }
                     }
                     q++;
@@ -280,4 +311,10 @@ int Check_Step4(int m, int n)
         }
     }
     return 0;
+}
+
+int Reset(int ti, int tj)
+{
+    x[ti][tj] = 0;
+    return x[ti][tj];
 }
