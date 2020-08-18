@@ -1,5 +1,4 @@
 ﻿#include<stdio.h> 
-#include<math.h>
 
 #define MAX_SIZE (1000) 
 
@@ -52,14 +51,6 @@ int main()
             }
         }
     }
-    printf("\n");
-    for (i = 1; i <= M_values; i++)
-    {
-        for (j = 1; j <= N_values; j++) {
-            printf("%d", x[i][j]);
-        }
-        printf("\n");
-    }
 
     calculate();
     process();
@@ -92,26 +83,10 @@ int Check_Step1(int k, int l)
     if (x[k][l +1 ] == 1)
     {
         Check_Step2_1(k, l);
-        printf("\n");
-        for (i = 1; i <= M_values; i++)
-        {
-            for (j = 1; j <= N_values; j++) {
-                printf("%d", x[i][j]);
-            }
-            printf("\n");
-        }
     }
     else
     {
         Check_Step2_2(k, l);
-        printf("\n");
-        for (i = 1; i <= M_values; i++)
-        {
-            for (j = 1; j <= N_values; j++) {
-                printf("%d", x[i][j]);
-            }
-            printf("\n");
-        }
     }
     return 0;
 }
@@ -235,9 +210,9 @@ int Check_Step3(int m, int n)
 
 int Check_Step4(int m, int n)
 {
-    for (int r = m; r <= M_values ; r++)
+    for (int r = m; r <= M_values + 1 ; r++)
     {
-        if (x[r][n] == 0)
+        if (x[r][n] != 1)
         {
             if (x[r - 1][n + 1] == 0)
             {
@@ -245,7 +220,7 @@ int Check_Step4(int m, int n)
                 int q = 0;
                 for (int o = m; o <= M_values; o++)
                 {
-                    for (int p = n - q; p < 0; p--)
+                    for (int p = n + q; p > 0; p--)
                     {
                         if (x[o][p] == 1)
                         {
@@ -255,35 +230,16 @@ int Check_Step4(int m, int n)
                         {
                             if (x[m + q + 1][n - q - 1] == 0)
                             {
-                                int s = 0;
-                                for (int t = m + q; t <= M_values; t++)
-                                {
-                                    for (int u = (n - q) + s; u <= N_values; u++)
-                                    {
-                                        if (x[t][u] == 1)
-                                        {
-                                            Reset(t, u);
-                                        }
-                                        else
-                                        {
-                                            if (x[m + q + s + 1][(n - q) + s + 1] == 0)
-                                            {
-                                                r = 2000;
-                                                t = 2000;
-                                                o = 2000;
-                                            }
-                                            u = 2000;
-                                        }
-                                    }
-                                    s++;
-                                }
+                                comet -= 1;
+                                o = 2000;
+                                r = 2000;
                             }
-                            p = 2000;
+                            p = 0;
                         }
                     }
                     q++;
                 }
-            }
+            } 
             else
             {
                 comet += 1;
@@ -301,6 +257,7 @@ int Check_Step4(int m, int n)
                             if (x[m + q + 1][n - q - 1] == 0)
                             {
                                 o = 2000;
+                                r = 2000;
                             }
                             p = 0;
                         }
